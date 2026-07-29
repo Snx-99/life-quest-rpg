@@ -14,16 +14,291 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      completions: {
+        Row: {
+          created_at: string
+          day: string
+          id: string
+          kind: Database["public"]["Enums"]["task_kind"]
+          minutes: number
+          skill_key: string | null
+          task_id: string | null
+          title: string | null
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          created_at?: string
+          day?: string
+          id?: string
+          kind: Database["public"]["Enums"]["task_kind"]
+          minutes?: number
+          skill_key?: string | null
+          task_id?: string | null
+          title?: string | null
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          created_at?: string
+          day?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["task_kind"]
+          minutes?: number
+          skill_key?: string | null
+          task_id?: string | null
+          title?: string | null
+          user_id?: string
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "completions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar: Json
+          best_streak: number
+          coins: number
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          interests: string[]
+          last_active_date: string | null
+          level: number
+          onboarded: boolean
+          streak: number
+          study_minutes: number
+          theme: string
+          title: string
+          unlocked: Json
+          updated_at: string
+          xp: number
+        }
+        Insert: {
+          avatar?: Json
+          best_streak?: number
+          coins?: number
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          interests?: string[]
+          last_active_date?: string | null
+          level?: number
+          onboarded?: boolean
+          streak?: number
+          study_minutes?: number
+          theme?: string
+          title?: string
+          unlocked?: Json
+          updated_at?: string
+          xp?: number
+        }
+        Update: {
+          avatar?: Json
+          best_streak?: number
+          coins?: number
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          interests?: string[]
+          last_active_date?: string | null
+          level?: number
+          onboarded?: boolean
+          streak?: number
+          study_minutes?: number
+          theme?: string
+          title?: string
+          unlocked?: Json
+          updated_at?: string
+          xp?: number
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          archived: boolean
+          created_at: string
+          difficulty: number
+          done: boolean
+          due_date: string | null
+          id: string
+          kind: Database["public"]["Enums"]["task_kind"]
+          last_done_date: string | null
+          minutes: number
+          notes: string | null
+          skill_key: string | null
+          streak: number
+          title: string
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          archived?: boolean
+          created_at?: string
+          difficulty?: number
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["task_kind"]
+          last_done_date?: string | null
+          minutes?: number
+          notes?: string | null
+          skill_key?: string | null
+          streak?: number
+          title: string
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          archived?: boolean
+          created_at?: string
+          difficulty?: number
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["task_kind"]
+          last_done_date?: string | null
+          minutes?: number
+          notes?: string | null
+          skill_key?: string | null
+          streak?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_key: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_key: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_key?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_quests: {
+        Row: {
+          completed: boolean
+          created_at: string
+          day: string | null
+          id: string
+          progress: number
+          quest_key: string
+          target: number
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          day?: string | null
+          id?: string
+          progress?: number
+          quest_key: string
+          target?: number
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          day?: string | null
+          id?: string
+          progress?: number
+          quest_key?: string
+          target?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_skills: {
+        Row: {
+          created_at: string
+          id: string
+          level: number
+          skill_key: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: number
+          skill_key: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: number
+          skill_key?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      task_kind: "daily" | "habit" | "task"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +425,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      task_kind: ["daily", "habit", "task"],
+    },
   },
 } as const
