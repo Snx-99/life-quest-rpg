@@ -13,6 +13,7 @@ import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as QuestsRouteImport } from './routes/quests'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SkillsRoute = SkillsRouteImport.update({
@@ -35,6 +36,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
@@ -65,14 +74,22 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/onboarding' | '/profile' | '/quests' | '/skills'
+  fullPaths: '/' | '/admin' | '/onboarding' | '/profile' | '/quests' | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding' | '/profile' | '/quests' | '/skills'
-  id: '__root__' | '/' | '/onboarding' | '/profile' | '/quests' | '/skills'
+  to: '/' | '/admin' | '/onboarding' | '/profile' | '/quests' | '/skills'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/onboarding'
+    | '/profile'
+    | '/quests'
+    | '/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   OnboardingRoute: typeof OnboardingRoute
   ProfileRoute: typeof ProfileRoute
   QuestsRoute: typeof QuestsRoute
@@ -109,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +145,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   OnboardingRoute: OnboardingRoute,
   ProfileRoute: ProfileRoute,
   QuestsRoute: QuestsRoute,
