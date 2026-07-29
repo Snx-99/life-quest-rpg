@@ -12,7 +12,6 @@ import {
   HAIR_COLORS,
   INTERESTS,
   OUTFIT_COLORS,
-  SKILL_PLACEHOLDER,
   SKIN_TONES,
   SKILLS,
   suggestSkills,
@@ -134,7 +133,7 @@ function Onboarding() {
                   const s = SKILLS.find((x) => x.key === k);
                   return (
                     <span key={k} className="rounded-full bg-secondary px-3 py-1 text-xs">
-                      {s?.icon} {s?.name ?? SKILL_PLACEHOLDER}
+                      {s?.icon} {s?.name ?? k}
                     </span>
                   );
                 })}
