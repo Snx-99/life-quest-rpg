@@ -1,0 +1,17 @@
+{
+  "name": "Life Quest — ta vie en jeu vidéo",
+  "short_name": "Life Quest",
+  "description": "Transforme tes habitudes, tâches et objectifs en aventure RPG.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#141519",
+  "theme_color": "#141519",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
