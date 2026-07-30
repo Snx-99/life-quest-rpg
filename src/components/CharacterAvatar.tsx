@@ -15,7 +15,7 @@ const light = (c: string, pct = 82) => `color-mix(in srgb, ${c} ${pct}%, #fff)`;
 
 const OUTLINE = "#17161d";
 
-function P({ x, y, w = 1, h = 1, fill }: { x: number; y: number; w?: number; h?: number; fill: string }) {
+function P({ x, y, w = 1, h = 1, fill }: { x: number; y: number; w?: number; h?: number; fill?: string }) {
   return <rect x={x} y={y} width={w} height={h} fill={fill} />;
 }
 
