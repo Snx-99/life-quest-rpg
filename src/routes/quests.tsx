@@ -1,6 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Check, Plus } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
-import { buildStats, useAchievements, useCompletions, useProfile, useSkills } from "@/lib/db";
+import {
+  buildStats,
+  useAchievements,
+  useCompleteTask,
+  useCompletions,
+  useCreateTask,
+  useProfile,
+  useSkills,
+  useTasks,
+} from "@/lib/db";
 import { ACHIEVEMENTS, EPIC_QUESTS, pickDailyQuests, type StatsSnapshot } from "@/lib/game";
 
 export const Route = createFileRoute("/quests")({
@@ -20,23 +30,69 @@ function QuestsPage() {
   const { data: completions = [] } = useCompletions();
   const { data: skills = [] } = useSkills();
   const { data: owned = [] } = useAchievements();
+  const { data: tasks = [] } = useTasks();
+  const createTask = useCreateTask();
+  const completeTask = useCompleteTask();
 
   const stats = buildStats(profile, completions, skills);
   const ownedKeys = new Set(owned.map((a) => a.achievement_key));
   const daily = pickDailyQuests(profile?.interests ?? [], new Date().getDate());
+  const today = new Date().toLocaleDateString("sv-SE");
+  const busy = createTask.isPending || completeTask.isPending;
 
   return (
     <AppShell title="Quêtes" subtitle="Objectifs du jour et grandes aventures">
       <h2 className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">Aujourd'hui</h2>
       <ul className="mb-6 space-y-2">
-        {daily.map((q) => (
-          <li key={q.key} className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3">
-            <span className="text-lg">{q.icon}</span>
-            <span className="flex-1 text-sm">{q.label}</span>
-            <span className="text-[11px] text-muted-foreground">+{q.xp} XP</span>
-          </li>
-        ))}
+        {daily.map((q) => {
+          const task = tasks.find((t) => t.kind === "daily" && t.title === q.label);
+          const done = !!task && (task.last_done_date === today || task.done);
+          const onClick = () => {
+            if (busy || done) return;
+            if (!task) {
+              createTask.mutate({
+                title: q.label,
+                kind: "daily",
+                xp: q.xp,
+                difficulty: 2,
+                minutes: 0,
+                notes: "Quête journalière",
+              });
+            } else {
+              completeTask.mutate(task);
+            }
+          };
+          return (
+            <li key={q.key}>
+              <button
+                type="button"
+                onClick={onClick}
+                disabled={done || busy}
+                aria-label={done ? `${q.label} terminée` : task ? `Terminer ${q.label}` : `Ajouter ${q.label}`}
+                className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors ${
+                  done
+                    ? "border-primary/50 bg-card opacity-70"
+                    : "border-border bg-card active:bg-elevated disabled:opacity-60"
+                }`}
+              >
+                <span className="text-lg">{q.icon}</span>
+                <span className={`flex-1 text-sm ${done ? "line-through text-muted-foreground" : ""}`}>
+                  {q.label}
+                </span>
+                <span className="text-[11px] text-muted-foreground">+{q.xp} XP</span>
+                <span
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                    done ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                  }`}
+                >
+                  {done ? <Check className="h-4 w-4" /> : task ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
+
 
       <h2 className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">Grandes quêtes</h2>
       <ul className="mb-6 space-y-2">
