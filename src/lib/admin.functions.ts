@@ -116,7 +116,7 @@ export const undoRenameAll = createServerFn({ method: "POST" })
       const { prev_name, ...rest } = current;
       await supabaseAdmin
         .from("profiles")
-        .update({ display_name: (prev_name as string | null) ?? null, unlocked: rest })
+        .update({ display_name: (prev_name as string | null) ?? null, unlocked: rest as never })
         .eq("id", row.id);
       count += 1;
     }
@@ -185,7 +185,7 @@ export const undoReset = createServerFn({ method: "POST" })
       const { backup: _drop, ...rest } = current;
       await supabaseAdmin
         .from("profiles")
-        .update({ ...backup, unlocked: rest })
+        .update({ ...backup, unlocked: rest as never })
         .eq("id", row.id);
       count += 1;
     }
