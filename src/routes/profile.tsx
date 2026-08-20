@@ -67,6 +67,7 @@ function ProfilePage() {
   const qc = useQueryClient();
 
   const stats = buildStats(profile, completions, skills);
+  const unlockAll = Boolean((profile?.unlocked as Record<string, unknown> | undefined)?.all);
   const level = levelFromXp(profile?.xp ?? 0).level;
   const avatar = { ...DEFAULT_AVATAR, ...(profile?.avatar ?? {}) };
   const topSkill = [...skills].sort((a, b) => b.xp - a.xp)[0];
@@ -171,7 +172,7 @@ function ProfilePage() {
             <p className="mb-2 text-xs text-muted-foreground">{SLOT_LABELS[slot]}</p>
             <div className="flex flex-wrap gap-2">
               {COSMETICS.filter((c) => c.slot === slot).map((c) => {
-                const locked = level < c.level;
+                const locked = !unlockAll && level < c.level;
                 const active = (avatar as Record<string, string>)[
                   slot === "hair" ? "hair" : slot
                 ] === c.key;
@@ -197,7 +198,7 @@ function ProfilePage() {
           <p className="mb-2 text-xs text-muted-foreground">Thème de l'app</p>
           <div className="flex flex-wrap gap-2">
             {APP_THEMES.map((t) => {
-              const locked = level < t.level;
+              const locked = !unlockAll && level < t.level;
               return (
                 <button
                   key={t.key}
